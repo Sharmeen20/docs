@@ -163,7 +163,7 @@ $paramSDK = (!empty($sdk)) ? '?sdk='.$sdk : '';
                                     : ['Default' => 'examples'];
                                 ?>
                                 <?php foreach ($docDirectories as $docDirectoryKey => $docDirectory): ?>
-                                <option value="/docs/<?php echo $this->escape($family); ?>/<?php echo $serviceName; ?>?sdk=<?php echo $this->escape($key); ?>-<?php echo $this->escape(strtolower($docDirectoryKey)); ?>"<?php echo (($key . '-' . strtolower($docDirectoryKey)) === $sdk) ? ' selected' : ''; ?>>
+                                <option value="/docs/<?php echo $this->escape($family); ?>/<?php echo $serviceName; ?>?sdk=<?php echo $this->escape($key); ?>-<?php echo $this->escape(strtolower($docDirectoryKey)); ?>&v=<?php echo $this->escape($version); ?>"<?php echo (($key . '-' . strtolower($docDirectoryKey)) === $sdk) ? ' selected' : ''; ?>>
                                     <?php echo $this->escape($name); ?> SDK <?php if(count($docDirectories) > 1): ?>(<?php echo $docDirectoryKey; ?> examples)<?php endif; ?>
                                 </option>
                             <?php endforeach; ?>
@@ -222,7 +222,7 @@ $paramSDK = (!empty($sdk)) ? '?sdk='.$sdk : '';
                         $endpoints++;
                         ?>
                         <li class="margin-bottom-small <?php echo implode(' ', $platformsList); ?>">
-                            <a href="/docs/<?php echo $this->escape($family); ?>/<?php echo $serviceName; ?><?php echo $this->escape($paramSDK); ?>#<?php echo $operation['operationId']; ?>"><i class="icon-angle-circled-right"></i> <?php echo $this->escape($operation['summary']); ?></a>
+                            <a href="/docs/<?php echo $this->escape($family); ?>/<?php echo $serviceName; ?><?php echo $this->escape($paramSDK); ?>&v=<?php echo $this->escape($version); ?>#<?php echo $operation['operationId']; ?>"><i class="icon-angle-circled-right"></i> <?php echo $this->escape($operation['summary']); ?></a>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -509,3 +509,21 @@ $paramSDK = (!empty($sdk)) ? '?sdk='.$sdk : '';
         </div>
     <?php endforeach; ?>
 </div>
+
+<script type="text/javascript">
+    function updateHash(hash) {
+        if (hash) {
+            document.querySelectorAll('.choose-platform[name="URL"] option').forEach(function (option) {
+                option.value += hash;
+            });
+
+            document.querySelector('.choose-platform[name="v"]').parentElement.action += hash;
+        }
+    };
+
+    document.addEventListener('state-changed', function () {
+        const hash = window.location.hash;
+        console.log('state-change: ' + hash);
+        updateHash(hash);
+    });
+</script>
